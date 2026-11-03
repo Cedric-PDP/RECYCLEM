@@ -47,6 +47,8 @@ export function parseItem(body) {
     const s = typeof v === "string" ? v.trim() : v == null ? "" : String(v).trim();
     if (s.length > TEXT_MAX) throw new Error(`« ${col.label} » est trop long.`);
     if (col.required && !s) throw new Error(`« ${col.label} » est obligatoire.`);
+    if (s && col.type === "url" && !/^https?:\/\/\S+$/i.test(s)) throw new Error(`« ${col.label} » doit commencer par https://`);
+    if (s && col.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) throw new Error(`« ${col.label} » n'est pas une adresse mail.`);
     data[col.key] = s;
   }
   let image = null;

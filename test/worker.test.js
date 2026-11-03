@@ -35,19 +35,21 @@ test("pseudo lu dans le cookie", () => {
 });
 
 test("validation d'une ligne", () => {
-  assert.throws(() => parseItem({ data: { nom: "  " } }), /obligatoire/);
-  assert.throws(() => parseItem({ data: { nom: "a" }, image: "data:text/html;base64,AA==" }), /Image/);
-  const ok = parseItem({ data: { nom: " Chaise ", inconnu: "x" }, image: "data:image/png;base64,iVBORw==" });
-  assert.equal(ok.data.nom, "Chaise");
+  assert.throws(() => parseItem({ data: { materiel: "  " } }), /obligatoire/);
+  assert.throws(() => parseItem({ data: { materiel: "a" }, image: "data:text/html;base64,AA==" }), /Image/);
+  const ok = parseItem({ data: { materiel: " Chaise ", inconnu: "x" }, image: "data:image/png;base64,iVBORw==" });
+  assert.equal(ok.data.materiel, "Chaise");
   assert.equal(ok.data.inconnu, undefined);
   assert.equal(ok.image.type, "image/png");
+  assert.throws(() => parseItem({ data: { materiel: "a", lien: "javascript:alert(1)" } }), /https/);
+  assert.throws(() => parseItem({ data: { materiel: "a", mail: "pas-un-mail" } }), /mail/);
 });
 
 test("ajouter, s'intéresser, supprimer", async () => {
-  assert.equal((await call("POST", "items", { pseudo: null, body: { data: { nom: "x" } } })).status, 401);
-  assert.equal((await call("POST", "items", { csrf: false, body: { data: { nom: "x" } } })).status, 403);
+  assert.equal((await call("POST", "items", { pseudo: null, body: { data: { materiel: "x" } } })).status, 401);
+  assert.equal((await call("POST", "items", { csrf: false, body: { data: { materiel: "x" } } })).status, 403);
 
-  const r = await call("POST", "items", { body: { data: { nom: "Chaise" }, image: "data:image/png;base64,iVBORw==" } });
+  const r = await call("POST", "items", { body: { data: { materiel: "Chaise" }, image: "data:image/png;base64,iVBORw==" } });
   assert.equal(r.status, 201);
   const { id } = await r.json();
 

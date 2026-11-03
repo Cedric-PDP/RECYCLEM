@@ -1,17 +1,17 @@
 // Les colonnes de la liste. Une seule source : le serveur valide avec, la page s'affiche avec (/api/columns).
-// type : "text" (une ligne), "long" (plusieurs lignes), "image" (une seule par ligne).
-// À REMPLACER par les 10 colonnes du fichier Excel.
+// type : "text", "long" (plusieurs lignes), "url", "email", "tel" (cliquables), "image" (une seule par ligne).
+// card : affichée sur la carte (la première colonne texte est toujours le titre).
 export const COLUMNS = [
-  { key: "image", label: "Photo", type: "image" },
-  { key: "nom", label: "Nom", type: "text", required: true },
-  { key: "categorie", label: "Catégorie", type: "text" },
-  { key: "etat", label: "État", type: "text" },
-  { key: "lieu", label: "Lieu", type: "text" },
-  { key: "quantite", label: "Quantité", type: "text" },
-  { key: "dimensions", label: "Dimensions", type: "text" },
+  { key: "materiel", label: "Matériel / Marque", type: "text", required: true },
+  { key: "photo", label: "Photo", type: "image" },
+  { key: "conditionnement", label: "Conditionnement", type: "text", card: true },
+  { key: "quantite", label: "Quantité", type: "text", card: true },
+  { key: "reference", label: "Référence", type: "text" },
+  { key: "lien", label: "Lien fournisseur", type: "url" },
+  { key: "lieu", label: "Lieu", type: "text", card: true },
   { key: "contact", label: "Contact", type: "text" },
-  { key: "dispo", label: "Disponible à partir de", type: "text" },
-  { key: "description", label: "Description", type: "long" },
+  { key: "mail", label: "Mail", type: "email" },
+  { key: "tel", label: "Tel", type: "tel" },
 ];
 
 export const TEXT_MAX = 2000;

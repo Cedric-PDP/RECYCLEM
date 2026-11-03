@@ -34,6 +34,19 @@ const textCols = () => state.columns.filter((c) => c.type !== "image");
 const imageCol = () => state.columns.find((c) => c.type === "image");
 const titleCol = () => textCols()[0];
 
+// Valeur affichée : lien, mail et téléphone sont cliquables.
+function value(c, v) {
+  const stop = (e) => e.stopPropagation();
+  if (c.type === "url" && /^https?:\/\//i.test(v)) {
+    let host = v;
+    try { host = new URL(v).hostname.replace(/^www\./, ""); } catch {}
+    return el("a", { href: v, target: "_blank", rel: "noopener noreferrer", onclick: stop }, host);
+  }
+  if (c.type === "email") return el("a", { href: `mailto:${v}`, onclick: stop }, v);
+  if (c.type === "tel") return el("a", { href: `tel:${v.replace(/[^\d+]/g, "")}`, onclick: stop }, v);
+  return v;
+}
+
 // ---------- pseudo ----------
 function showPseudo() {
   $("pseudoBtn").textContent = state.pseudo ? `👤 ${state.pseudo}` : "Choisir un pseudo";
@@ -82,7 +95,7 @@ function interestButton(item) {
 
 function card(item) {
   const t = titleCol();
-  const facts = textCols().slice(1, 4).filter((c) => item.data[c.key] && c.type !== "long");
+  const facts = textCols().filter((c) => c.card && item.data[c.key]);
   return el("article", { class: "card", tabindex: "0", onclick: () => openDetail(item),
     onkeydown: (e) => { if (e.key === "Enter") openDetail(item); } },
     item.hasImage
@@ -101,7 +114,7 @@ function openDetail(item) {
     item.hasImage ? el("img", { class: "big", src: `/api/items/${item.id}/image`, alt: "" }) : null,
     el("h2", {}, item.data[titleCol().key] || "(sans titre)"),
     el("dl", { class: "full" }, textCols().slice(1).filter((c) => item.data[c.key])
-      .map((c) => [el("dt", {}, c.label), el("dd", { class: c.type === "long" ? "long" : null }, item.data[c.key])])),
+      .map((c) => [el("dt", {}, c.label), el("dd", { class: c.type === "long" ? "long" : null }, value(c, item.data[c.key]))])),
     el("p", { class: "hint" }, `Ajouté par ${item.author}`,
       item.interested.length ? ` · Intéressé(s) : ${item.interested.join(", ")}` : ""),
     el("div", { class: "actions" },
@@ -147,10 +160,12 @@ function buildForm() {
     } else if (c.type === "long") {
       input = el("textarea", { id, name: c.key, rows: "3", required: !!c.required });
     } else {
-      input = el("input", { id, name: c.key, required: !!c.required, list: `dl_${c.key}` });
+      const type = { url: "url", email: "email", tel: "tel" }[c.type] || "text";
+      input = el("input", { id, name: c.key, type, required: !!c.required, list: `dl_${c.key}`,
+        placeholder: c.type === "url" ? "https://…" : null });
     }
     // Suggestions tirées des valeurs déjà saisies (sauf texte long).
-    const values = c.type === "text" ? [...new Set(state.items.map((i) => i.data[c.key]).filter(Boolean))].slice(0, 50) : [];
+    const values = c.type !== "long" && c.type !== "image" ? [...new Set(state.items.map((i) => i.data[c.key]).filter(Boolean))].slice(0, 50) : [];
     return el("label", { class: `field${c.type === "long" || c.type === "image" ? " wide" : ""}` },
       el("span", {}, c.label, c.required ? " *" : ""), input,
       values.length ? el("datalist", { id: `dl_${c.key}` }, values.map((v) => el("option", { value: v }))) : null);
