@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RECYCLEM</title>
+  <link rel="stylesheet" href="/app.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <h1>RECYCLEM</h1>
+    <input id="search" type="search" placeholder="Rechercher…" aria-label="Rechercher">
+    <label class="toggle"><input id="onlyMine" type="checkbox"> Ce qui m'intéresse</label>
+    <button id="pseudoBtn" class="ghost" type="button" title="Changer de pseudo"></button>
+    <button id="addBtn" class="primary" type="button">+ Ajouter</button>
+  </header>
+
+  <main>
+    <p id="status" class="status" role="status"></p>
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <dialog id="pseudoDlg">
+    <form method="dialog" id="pseudoForm">
+      <h2>Ton pseudo</h2>
+      <p class="hint">Il est retenu sur cet appareil et s'affiche à côté de ce qui t'intéresse.</p>
+      <input id="pseudoInput" maxlength="40" required autocomplete="nickname">
+      <div class="actions"><button class="primary">Valider</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="addDlg">
+    <form id="addForm">
+      <h2>Ajouter une ligne</h2>
+      <div id="fields" class="fields"></div>
+      <p id="addError" class="error" role="alert"></p>
+      <div class="actions">
+        <button type="button" class="ghost" id="addCancel">Annuler</button>
+        <button class="primary" id="addSubmit">Ajouter</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="detailDlg">
+    <div id="detail"></div>
+  </dialog>
+</body>
+</html>

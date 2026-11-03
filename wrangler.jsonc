@@ -1,0 +1,10 @@
+{
+  "name": "recyclem",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "d1_databases": [
+    // database_id : à remplacer par l'identifiant de la base D1 « recyclem » (voir README).
+    { "binding": "DB", "database_name": "recyclem", "database_id": "00000000-0000-0000-0000-000000000000" }
+  ]
+}

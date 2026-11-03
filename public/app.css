@@ -1,0 +1,71 @@
+:root {
+  --bg: #f6f7f5; --card: #fff; --text: #1d2420; --muted: #5a6560; --line: #dde2de;
+  --accent: #1f7a4d; --accent-text: #fff; --star: #b45309; --danger: #b42318;
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151917; --card: #1f2522; --text: #e8ece9; --muted: #a3ada7; --line: #333b37;
+          --accent: #3fbf7f; --accent-text: #0d1a13; --star: #f5b041; --danger: #ff8a80; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); }
+
+.bar { position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap; gap: .6rem; align-items: center;
+       padding: .7rem 1rem; background: var(--card); border-bottom: 1px solid var(--line); }
+.bar h1 { margin: 0 .5rem 0 0; font-size: 1.15rem; letter-spacing: .05em; color: var(--accent); }
+#search { flex: 1 1 14rem; min-width: 0; }
+.toggle { display: flex; gap: .35rem; align-items: center; color: var(--muted); white-space: nowrap; }
+
+input, textarea, button { font: inherit; color: inherit; }
+input:not([type=checkbox]):not([type=file]), textarea {
+  width: 100%; padding: .5rem .65rem; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+textarea { resize: vertical; }
+button { cursor: pointer; padding: .5rem .9rem; border-radius: 8px; border: 1px solid var(--line); background: var(--card); }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button.ghost { background: transparent; }
+button.danger { color: var(--danger); border-color: var(--danger); background: transparent; }
+button:disabled { opacity: .6; cursor: wait; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding: 1rem; }
+.status { color: var(--muted); margin: 0 0 .8rem; }
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+
+.card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line);
+        border-radius: 12px; overflow: hidden; cursor: pointer; transition: box-shadow .15s, transform .15s; }
+.card:hover { box-shadow: 0 4px 16px rgb(0 0 0 / .12); transform: translateY(-1px); }
+.thumb { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--bg); display: block; }
+.thumb.empty { display: grid; place-items: center; color: var(--muted); font-size: .85rem; }
+.card .body { display: flex; flex-direction: column; gap: .4rem; padding: .7rem .8rem .8rem; flex: 1; }
+.card h3 { margin: 0; font-size: 1rem; }
+dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .15rem .6rem; font-size: .85rem; }
+dt { color: var(--muted); }
+dd { margin: 0; overflow-wrap: anywhere; }
+dd.long { white-space: pre-wrap; grid-column: 1 / -1; }
+.foot { margin-top: auto; padding-top: .3rem; }
+
+.interest { display: inline-flex; gap: .4rem; align-items: center; }
+.interest.on { color: var(--star); border-color: var(--star); font-weight: 600; }
+.count { background: var(--bg); border-radius: 999px; padding: 0 .45rem; font-size: .8rem; }
+
+dialog { border: none; border-radius: 14px; padding: 1.2rem; background: var(--card); color: var(--text);
+         width: min(40rem, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); }
+dialog::backdrop { background: rgb(0 0 0 / .45); }
+dialog h2 { margin-top: 0; }
+.hint { color: var(--muted); font-size: .9rem; }
+.error { color: var(--danger); min-height: 1.2em; }
+.actions { display: flex; gap: .6rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1rem; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.field { display: flex; flex-direction: column; gap: .3rem; font-size: .9rem; }
+.field.wide { grid-column: 1 / -1; }
+#preview { max-width: 100%; max-height: 14rem; border-radius: 8px; margin-top: .5rem; }
+#detailDlg { position: relative; }
+.close { position: absolute; top: .6rem; right: .6rem; }
+.big { width: 100%; max-height: 50vh; object-fit: contain; border-radius: 10px; background: var(--bg); }
+dl.full { font-size: .95rem; gap: .35rem .8rem; }
+
+@media (max-width: 560px) {
+  .fields { grid-template-columns: 1fr; }
+  .bar h1 { flex-basis: 100%; }
+}
